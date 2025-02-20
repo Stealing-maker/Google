@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修改帳號與密碼</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            width: 250px;
+            height: 40px;
+            font-size: 16px;
+            padding: 5px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+        }
+        button {
+            width: 120px;
+            height: 40px;
+            font-size: 16px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            display: block;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>修改帳號與密碼</h2>
+        <label for="newUsername">新帳號</label>
+        <input type="text" id="newUsername" placeholder="輸入新帳號">
+        <label for="newPassword">新密碼</label>
+        <input type="password" id="newPassword" placeholder="輸入新密碼">
+        <button onclick="updateCredentials()">更新</button>
+        <p id="message"></p>
+    </div>
+    
+    <script>
+        function updateCredentials() {
+            const newUsername = document.getElementById("newUsername").value;
+            const newPassword = document.getElementById("newPassword").value;
+            const message = document.getElementById("message");
+            
+            if (newUsername && newPassword) {
+                localStorage.setItem("username", newUsername);
+                localStorage.setItem("password", newPassword);
+                message.textContent = "帳號與密碼已更新！";
+                message.style.color = "green";
+            } else {
+                message.textContent = "請輸入完整的帳號與密碼！";
+                message.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>
