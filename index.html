@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url('background1.png');
+            background-image: url('background2.png');
             background-size: cover;
             background-position: center;
             display: flex;
@@ -20,8 +20,38 @@
             margin-top: 200px; /* 向下移動所有內容 */
             text-align: center;
         }
+        .account-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            padding: 10px;
+            margin-bottom: 80px;
+            background-color: #f1f3f4;
+            position: relative;
+        }
+        .profile-img {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .account-name {
+            font-size: 16px;
+            color: #333;
+            flex-grow: 1;
+        }
+        .dropdown-icon {
+            width: 1px;
+            height: 1px;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid black;
+            margin-left: 10px;
+        }
         input {
-            width: 100%;
+            width: 250px;
             height: 40px;
             font-size: 16px;
             padding: 5px;
@@ -29,7 +59,6 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             display: block;
-            background: rgba(255, 255, 255, 0.8);
         }
         .options {
             display: flex;
@@ -85,6 +114,11 @@
 </head>
 <body>
     <div class="container">
+        <div class="account-container">
+            <img src="icon.png" alt="Profile" class="profile-img">
+            <div class="account-name">bill20050201@gmail.com</div>
+            <div class="dropdown-icon"></div>
+        </div>
         <h4>如要繼續操作，請您先驗證身分</h4>
         <input type="password" id="password" placeholder="輸入您的密碼">
         <div class="checkbox-container">
