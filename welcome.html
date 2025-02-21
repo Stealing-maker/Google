@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>修改帳號與密碼</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,47 +14,64 @@
             margin: 0;
         }
         .container {
-            text-align: center;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        label {
+            white-space: pre-wrap;
+            display: block;
+            margin-top: 5px;
         }
         input {
-            width: 250px;
+            width: 100%;
             height: 40px;
             font-size: 16px;
             padding: 5px;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
-            display: block;
+        }
+        .button-container {
+            text-align: right; /* 讓按鈕靠右對齊 */
         }
         button {
-            width: 120px;
+            width: 30%;
             height: 40px;
-            font-size: 16px;
-            margin-top: 10px;
+            font-size: 14px;
             border: none;
             border-radius: 5px;
-            background-color: #28a745;
+            background-color: #007BFF;
             color: white;
             cursor: pointer;
-            display: block;
+            white-space: nowrap;
         }
         button:hover {
-            background-color: #218838;
+            background-color: #0056b3;
+        }
+        h4 {
+            margin-top: 15px;
+            text-align: left;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>修改帳號與密碼</h2>
-        <label for="newUsername">新帳號</label>
-        <input type="text" id="newUsername" placeholder="輸入新帳號">
-        <label for="newPassword">新密碼</label>
-        <input type="password" id="newPassword" placeholder="輸入新密碼">
-        <button onclick="updateCredentials()">更新</button>
+        <h1>密碼</h1>
+        <label>請選用高強度密碼；此外，切勿在其他帳戶中重複使用該密碼。</label>
+        <label>系統可能會在某些裝置上將您登出帳戶。</label>
+        
+        <input type="password" id="newUsername" placeholder="新密碼">
+
+        <h4>密碼強度：</h4>
+        <label>至少要有8個字元。請勿使用與其他網站帳戶相同的密碼，</label>
+        <label>或是任何容易破解的密碼(例如寵物的名字)。</label>
+
+        <input type="password" id="newPassword" placeholder="確認新密碼">
+        
+        <!-- 讓按鈕靠右對齊 -->
+        <div class="button-container">
+            <button onclick="updateCredentials()">變更密碼</button>
+        </div>
+
         <p id="message"></p>
     </div>
     
