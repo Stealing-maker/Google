@@ -17,6 +17,7 @@
             margin: 0;
         }
         .container {
+            margin-top: 100px; /* 向下移動所有內容 */
             text-align: left;
         }
         label {
@@ -55,23 +56,21 @@
             text-align: left;
         }
         label {
-            font-size: 12px; /* 或 10px，視需求調整 */
+            font-size: 10px; /* 或 10px，視需求調整 */
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>密碼</h1>
-        <label>請選用高強度密碼；此外，切勿在其他帳戶中</label>
-        <label>重複使用該密碼。系統可能會在某些裝置上將</label>
-        <label>您登出帳戶。</label>
+        <label>請選用高強度密碼；此外，切勿在其他帳戶中重複使用該密</label>
+        <label>碼。系統可能會在某些裝置上將您登出帳戶。</label>
         
         <input type="password" id="newUsername" placeholder="新密碼">
 
         <h4>密碼強度：</h4>
-        <label>至少要有8個字元。請勿使用與其他網站帳戶相</label>
-        <label>同的密碼，或是任何容易破解的密碼(例如寵物</label>
-        <label>的名字)。</label>
+        <label>至少要有8個字元。請勿使用與其他網站帳戶相同的密碼，</label>
+        <label>或是任何容易破解的密碼(例如寵物的名字)。</label>
 
         <input type="password" id="newPassword" placeholder="確認新密碼">
         
