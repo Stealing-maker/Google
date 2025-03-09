@@ -3,35 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>密碼傳輸</title>
+    <title>產品編號發送到LINE</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        input, button { padding: 10px; margin: 10px; font-size: 16px; }
+    </style>
 </head>
 <body>
-    <h2>請輸入密碼</h2>
-    <input type="password" id="password" placeholder="輸入密碼">
-    <button onclick="sendPassword()">送出</button>
-    <p id="message"></p>
+
+    <h2>輸入產品編號並發送到 LINE</h2>
+    <input type="text" id="productId" placeholder="輸入產品編號">
+    <button onclick="sendToLine()">發送</button>
 
     <script>
-        function sendPassword() {
-			const password = document.getElementById("password").value;
-			fetch("https://supporttw.com/", {  // 改成你的伺服器 IP 或網域
-			method: "POST",
-			headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-			},
-			body: "password=" + encodeURIComponent(password)
-		})
-		.then(response => response.text())
-		.then(data => {
-			console.log("伺服器回應:", data);
-			document.getElementById("message").textContent = data;
-		})
-		.catch(error => {
-			console.error("錯誤:", error);
-			document.getElementById("message").textContent = "發送失敗：" + error;
-		});
-	}
+        function sendToLine() {
+            let productId = document.getElementById("productId").value.trim();
+            if (!productId) {
+                alert("請輸入產品編號！");
+                return;
+            }
 
+            let lineToken = "eQMFeAAAcvmzB1k9fDzBrwDjhfLJVylzlKOLlO153zl"; // ← 這裡填入你的 LINE Notify 權杖
+            let message = "🔔 產品通知：\n產品編號：" + productId;
+
+            fetch("https://notify-api.line.me/api/notify", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Authorization": "Bearer " + lineToken
+                },
+                body: new URLSearchParams({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 200) {
+                    alert("成功發送到 LINE！");
+                } else {
+                    alert("發送失敗，請檢查權杖或網路！");
+                }
+            })
+            .catch(error => console.error("錯誤:", error));
+        }
     </script>
+
 </body>
 </html>
