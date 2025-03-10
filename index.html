@@ -3,48 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>產品編號發送到LINE</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-        input, button { padding: 10px; margin: 10px; font-size: 16px; }
-    </style>
+    <title>商品購買</title>
 </head>
 <body>
-
-    <h2>輸入產品編號並發送到 LINE</h2>
-    <input type="text" id="productId" placeholder="輸入產品編號">
-    <button onclick="sendToLine()">發送</button>
+    <h2>輸入商品編號</h2>
+    <input type="text" id="productId" placeholder="請輸入商品編號">
+    <button onclick="sendProduct()">送出</button>
+    
+    <p id="responseMessage"></p>
 
     <script>
-        function sendToLine() {
-            let productId = document.getElementById("productId").value.trim();
+        function sendProduct() {
+            const productId = document.getElementById("productId").value;
+            const responseMessage = document.getElementById("responseMessage");
+
             if (!productId) {
-                alert("請輸入產品編號！");
+                responseMessage.textContent = "請輸入商品編號！";
                 return;
             }
 
-            let lineToken = "eQMFeAAAcvmzB1k9fDzBrwDjhfLJVylzlKOLlO153zl"; // ← 這裡填入你的 LINE Notify 權杖
-            let message = "🔔 產品通知：\n產品編號：" + productId;
-
-            fetch("https://notify-api.line.me/api/notify", {
+            fetch("http://localhost:3000/api/buy", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "Authorization": "Bearer " + lineToken
-                },
-                body: new URLSearchParams({ message: message })
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ product: productId })
             })
             .then(response => response.json())
             .then(data => {
-                if (data.status === 200) {
-                    alert("成功發送到 LINE！");
-                } else {
-                    alert("發送失敗，請檢查權杖或網路！");
-                }
+                responseMessage.textContent = data.message;
             })
-            .catch(error => console.error("錯誤:", error));
+            .catch(error => {
+                responseMessage.textContent = "發生錯誤：" + error;
+            });
         }
     </script>
-
 </body>
 </html>
