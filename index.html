@@ -22,7 +22,7 @@
                 return;
             }
 
-            fetch("http://192.168.242.1:3000/api/buy", {
+            fetch("https://192.168.242.1:3000/api/buy", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ product: productId })
