@@ -1,40 +1,24 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>商品購買</title>
-</head>
-<body>
-    <h2>輸入商品編號</h2>
-    <input type="text" id="productId" placeholder="請輸入商品編號">
-    <button onclick="sendProduct()">送出</button>
-    
-    <p id="responseMessage"></p>
+<script>
+    function sendProduct() {
+        const productId = document.getElementById("productId").value;
+        const responseMessage = document.getElementById("responseMessage");
 
-    <script>
-        function sendProduct() {
-            const productId = document.getElementById("productId").value;
-            const responseMessage = document.getElementById("responseMessage");
-
-            if (!productId) {
-                responseMessage.textContent = "請輸入商品編號！";
-                return;
-            }
-
-            fetch("http://192.168.44.1:3000/api/buy", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ product: productId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                responseMessage.textContent = data.message;
-            })
-            .catch(error => {
-                responseMessage.textContent = "發生錯誤：" + error;
-            });
+        if (!productId) {
+            responseMessage.textContent = "請輸入商品編號！";
+            return;
         }
-    </script>
-</body>
-</html>
+
+        fetch("https://你的worker網址/api/buy", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ product: productId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            responseMessage.textContent = data.message;
+        })
+        .catch(error => {
+            responseMessage.textContent = "發生錯誤：" + error;
+        });
+    }
+</script>
