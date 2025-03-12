@@ -22,7 +22,7 @@
                 return;
             }
 
-            fetch("https://restless-fire-a5e7.no-reply-oglego.workers.dev/api/buy", {
+            fetch("https://192.168.44.1:3000/api/buy", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ product: productId })
