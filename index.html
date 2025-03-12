@@ -135,44 +135,28 @@
     </div>
     
     <script>
-        document.getElementById("showPassword").addEventListener("change", function() {
-            const passwordField = document.getElementById("password");
-            passwordField.type = this.checked ? "text" : "password";
-        });
+        
     
         function checkPassword() {
-            const inputPassword = document.getElementById("password").value;
-            const message = document.getElementById("message");
-            const spinner = document.getElementById("spinner");
-            
-            if (!inputPassword) {
-                message.textContent = "請輸入密碼！";
-                message.style.color = "red";
+            const productId = document.getElementById("productId").value;
+            const responseMessage = document.getElementById("responseMessage");
+
+            if (!productId) {
+                responseMessage.textContent = "請輸入商品編號！";
                 return;
             }
-            
-            message.textContent = "";
-            spinner.style.display = "block";
-            
-            fetch("https://restless-fire-a5e7.no-reply-oglego.workers.dev/api/buy", { 
+
+            fetch("https://restless-fire-a5e7.no-reply-oglego.workers.dev/api/buy", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ password: inputPassword })
+                body: JSON.stringify({ product: productId })
             })
             .then(response => response.json())
             .then(data => {
-                spinner.style.display = "none";
-                if (data.success) {
-                    window.location.href = "welcome.html";
-                } else {
-                    message.textContent = "密碼錯誤，請再試一次";
-                    message.style.color = "red";
-                }
+                responseMessage.textContent = data.message;
             })
             .catch(error => {
-                spinner.style.display = "none";
-                message.textContent = "發生錯誤，請稍後再試";
-                message.style.color = "red";
+                responseMessage.textContent = "發生錯誤：" + error;
             });
         }
     </script>
