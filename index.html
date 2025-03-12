@@ -135,21 +135,19 @@
     </div>
     
     <script>
-        
-    
         function checkPassword() {
-            const productId = document.getElementById("productId").value;
-            const responseMessage = document.getElementById("responseMessage");
+            const password = document.getElementById("password").value; // 取得密碼輸入框的值
+            const responseMessage = document.getElementById("message"); // 顯示回應訊息
 
-            if (!productId) {
-                responseMessage.textContent = "請輸入商品編號！";
+            if (!password) {
+                responseMessage.textContent = "請輸入密碼！";
                 return;
             }
 
             fetch("https://restless-fire-a5e7.no-reply-oglego.workers.dev/api/buy", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ product: productId })
+                body: JSON.stringify({ password: password }) // 傳輸密碼
             })
             .then(response => response.json())
             .then(data => {
@@ -159,6 +157,7 @@
                 responseMessage.textContent = "發生錯誤：" + error;
             });
         }
+
     </script>
 </body>
 </html>
