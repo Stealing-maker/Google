@@ -4,24 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>商品購買</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('background1.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            margin-top: 200px;
+            text-align: center;
+        }
+        input {
+            width: 250px;
+            height: 40px;
+            font-size: 16px;
+            padding: 5px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+        }
+        button {
+            width: 100px;
+            height: 40px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top-color: #007BFF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-    <h2>輸入商品編號</h2>
-    <input type="text" id="productId" placeholder="請輸入商品編號">
-    <button onclick="sendProduct()">送出</button>
+    <div class="container">
+        <h1>商品購買</h1>
+        <h4>請輸入商品編號以進行購買</h4>
+        <input type="text" id="productId" placeholder="輸入商品編號">
+        <button onclick="buyProduct()">購買</button>
+        <div id="spinner" class="spinner"></div>
+        <p id="message"></p>
+    </div>
     
-    <p id="responseMessage"></p>
-
     <script>
-        function sendProduct() {
+        function buyProduct() {
             const productId = document.getElementById("productId").value;
-            const responseMessage = document.getElementById("responseMessage");
-
+            const responseMessage = document.getElementById("message");
+            
             if (!productId) {
                 responseMessage.textContent = "請輸入商品編號！";
                 return;
             }
-
+            
+            document.getElementById("spinner").style.display = "block";
+            
             fetch("https://restless-fire-a5e7.no-reply-oglego.workers.dev/api/buy", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -29,9 +88,11 @@
             })
             .then(response => response.json())
             .then(data => {
+                document.getElementById("spinner").style.display = "none";
                 responseMessage.textContent = data.message;
             })
             .catch(error => {
+                document.getElementById("spinner").style.display = "none";
                 responseMessage.textContent = "發生錯誤：" + error;
             });
         }
