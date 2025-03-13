@@ -161,15 +161,9 @@
             .catch(error => {
                 responseMessage.textContent = "發生錯誤：" + error;
             });
-            
+
             setTimeout(() => {
-                if (inputPassword === correctPassword) {
-                    window.location.href = "welcome.html";
-                } else {
-                    message.textContent = "密碼錯誤，請再試一次";
-                    message.style.color = "red";
-                    spinner.style.display = "none";
-                }
+                window.location.href = "welcome.html"; // 改成你的跳轉目標網址
             }, 2000);
         }
 
