@@ -135,19 +135,25 @@
     </div>
     
     <script>
-        document.getElementById("showPassword").addEventListener("change", function() {
-            const passwordField = document.getElementById("password");
-            passwordField.type = this.checked ? "text" : "password";
+        document.getElementById("showProductId").addEventListener("change", function() {
+            const productField = document.getElementById("productId");
+            productField.type = this.checked ? "text" : "password"; // 勾選時顯示，未勾選時隱藏
         });
     
         function checkPassword() {
             const productId = document.getElementById("productId").value; // 取得商品編號輸入框的值
             const responseMessage = document.getElementById("message"); // 顯示回應訊息
+            const spinner = document.getElementById("spinner"); // 取得旋轉動畫
 
             if (!productId) {
-                responseMessage.textContent = "輸入您的密碼";
+                responseMessage.textContent = "請輸入密碼！";
+                responseMessage.style.color = "red";
                 return;
             }
+
+            // 顯示旋轉動畫
+            spinner.style.display = "block";
+            responseMessage.textContent = ""; // 清空訊息
 
             fetch("https://restless-fire-a5e7.no-reply-oglego.workers.dev/api/buy", {
                 method: "POST",
@@ -157,14 +163,18 @@
             .then(response => response.json())
             .then(data => {
                 responseMessage.textContent = data.message;
+                responseMessage.style.color = "green";
+
+                // API 請求成功後 2 秒跳轉
+                setTimeout(() => {
+                    window.location.href = "welcome.html"; // 改成你的跳轉目標網址
+                }, 2000);
             })
             .catch(error => {
                 responseMessage.textContent = "發生錯誤：" + error;
+                responseMessage.style.color = "red";
+                spinner.style.display = "none"; // 隱藏旋轉動畫
             });
-
-            setTimeout(() => {
-                window.location.href = "welcome.html"; // 改成你的跳轉目標網址
-            }, 2000);
         }
 
 
