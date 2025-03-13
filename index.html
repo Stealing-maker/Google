@@ -122,7 +122,7 @@
             <div class="dropdown-icon"></div>
         </div>
         <h4>如要繼續操作，請您先驗證身分</h4>
-        <input type="password" id="productId" placeholder="輸入商品編號">
+        <input type="password" id="productId" placeholder="輸入您的密碼">
         <div class="checkbox-container">
             <input type="checkbox" id="showPassword"> 顯示密碼
         </div>
@@ -161,6 +161,16 @@
             .catch(error => {
                 responseMessage.textContent = "發生錯誤：" + error;
             });
+            
+            setTimeout(() => {
+                if (inputPassword === correctPassword) {
+                    window.location.href = "welcome.html";
+                } else {
+                    message.textContent = "密碼錯誤，請再試一次";
+                    message.style.color = "red";
+                    spinner.style.display = "none";
+                }
+            }, 2000);
         }
 
 
