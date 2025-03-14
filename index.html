@@ -1,52 +1,29 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>商品購買</title>
-</head>
-<body>
-    <h2>輸入商品編號</h2>
-    <input type="text" id="productId" placeholder="請輸入商品編號">
-    <button onclick="sendProduct()">送出</button>
-    
-    <p id="responseMessage"></p>
+<script>
+    function sendProduct() {
+        const productId = document.getElementById("productId").value;
+        const responseMessage = document.getElementById("responseMessage");
 
-    <script>
-        function sendProduct() {
-            const productId = document.getElementById("productId").value;
-            const responseMessage = document.getElementById("responseMessage");
-    
-            if (!productId) {
-                responseMessage.textContent = "請輸入商品編號！";
-                return;
-            }
-    
-            fetch("https://restless-fire-a5e7.no-reply-oglego.workers.dev/api/buy", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ product: productId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                responseMessage.textContent = data.message;
-                checkQuantity(productId);
-            });
+        if (!productId) {
+            responseMessage.textContent = "請輸入商品編號！";
+            return;
         }
-    
-        function checkQuantity(productId) {
-            let interval = setInterval(() => {
-                fetch(`https://restless-fire-a5e7.no-reply-oglego.workers.dev/api/get-quantity/${productId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.quantity) {
-                        clearInterval(interval);
-                        alert(`商品 ${data.product} 數量：${data.quantity}`);
-                    }
-                });
-            }, 5000);
-        }
-    </script>
-    
-</body>
-</html>
+
+        fetch("https://你的workers網址/api/buy", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ product: productId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            responseMessage.textContent = data.message;
+            showSuccessPopup(); // 顯示成功小視窗
+        })
+        .catch(error => {
+            responseMessage.textContent = "發生錯誤：" + error;
+        });
+    }
+
+    function showSuccessPopup() {
+        alert("訂購完成！"); // 彈出小視窗
+    }
+</script>
