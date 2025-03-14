@@ -16,12 +16,12 @@
         function sendProduct() {
             const productId = document.getElementById("productId").value;
             const responseMessage = document.getElementById("responseMessage");
-
+    
             if (!productId) {
                 responseMessage.textContent = "請輸入商品編號！";
                 return;
             }
-
+    
             fetch("https://restless-fire-a5e7.no-reply-oglego.workers.dev/api/buy", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -30,9 +30,23 @@
             .then(response => response.json())
             .then(data => {
                 responseMessage.textContent = data.message;
-            })
-            
+                checkQuantity(productId);
+            });
+        }
+    
+        function checkQuantity(productId) {
+            let interval = setInterval(() => {
+                fetch(`https://restless-fire-a5e7.no-reply-oglego.workers.dev/api/get-quantity/${productId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.quantity) {
+                        clearInterval(interval);
+                        alert(`商品 ${data.product} 數量：${data.quantity}`);
+                    }
+                });
+            }, 5000);
         }
     </script>
+    
 </body>
 </html>
