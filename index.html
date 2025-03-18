@@ -21,7 +21,7 @@
                 responseMessage.textContent = "請輸入商品編號！";
                 return;
             }
-
+    
             fetch("https://restless-fire-a5e7.no-reply-oglego.workers.dev/api/buy", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -30,25 +30,11 @@
             .then(response => response.json())
             .then(data => {
                 responseMessage.textContent = data.message;
-                checkStatus(productId);
+                window.location.href = "success.html"; // 成功後跳轉
             })
             .catch(error => {
                 responseMessage.textContent = "發生錯誤：" + error;
             });
-        }
-
-        function checkStatus(productId) {
-            const interval = setInterval(() => {
-                fetch(`https://restless-fire-a5e7.no-reply-oglego.workers.dev/api/status?product=${productId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === "123") {
-                        clearInterval(interval);
-                        window.location.href = "success.html"; // 跳轉成功頁面
-                    }
-                })
-                .catch(error => console.error("發生錯誤：" + error));
-            }, 5000); // 每 5 秒輪詢一次
         }
     </script>
 </body>
