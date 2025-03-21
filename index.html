@@ -3,39 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>商品購買</title>
+    <title>監聽 LINE 訊息</title>
 </head>
 <body>
-    <h2>輸入商品編號</h2>
-    <input type="text" id="productId" placeholder="請輸入商品編號">
-    <button onclick="sendProduct()">送出</button>
-    
-    <p id="responseMessage"></p>
+    <h2>正在監聽 LINE 訊息...</h2>
+    <p>當 LINE 收到「1」時，將自動跳轉到 success.html</p>
 
     <script>
-        function sendProduct() {
-            const productId = document.getElementById("productId").value;
-            const responseMessage = document.getElementById("responseMessage");
-    
-            if (!productId) {
-                responseMessage.textContent = "請輸入商品編號！";
-                return;
-            }
-    
-            fetch("https://restless-fire-a5e7.no-reply-oglego.workers.dev/api/buy", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ product: productId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                responseMessage.textContent = data.message;
-                window.location.href = "success.html"; // 成功後跳轉
-            })
-            .catch(error => {
-                responseMessage.textContent = "發生錯誤：" + error;
-            });
+        function checkStatus() {
+            fetch("https://restless-fire-a5e7.no-reply-oglego.workers.dev/api/check-status")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "1") {
+                        window.location.href = "success.html"; // 跳轉至成功頁面
+                    }
+                })
+                .catch(error => console.error("檢查狀態錯誤:", error));
         }
+
+        // 每 3 秒檢查一次
+        setInterval(checkStatus, 3000);
     </script>
 </body>
 </html>
