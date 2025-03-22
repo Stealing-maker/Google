@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>監聽 LINE 訊息</title>
+    <title>接收數字</title>
 </head>
 <body>
-    <h2>正在監聽 LINE 訊息...</h2>
-    <p>當 LINE 收到「1」時，將自動跳轉到 success.html</p>
+    <h2>接收到的數字：</h2>
+    <p id="numberDisplay">等待接收數字...</p>
 
     <script>
-        function checkStatus() {
-            fetch("https://restless-fire-a5e7.no-reply-oglego.workers.dev/api/check-status")
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === "1") {
-                        window.location.href = "success.html"; // 跳轉至成功頁面
-                    }
-                })
-                .catch(error => console.error("檢查狀態錯誤:", error));
+        // 監聽 POST 請求
+        async function receiveNumber() {
+            // 等待請求的 Body 資料
+            const response = await fetch(window.location.href, {
+                method: "POST"
+            });
+
+            // 解析接收的數據（假設是 JSON 格式）
+            const data = await response.json();
+            document.getElementById("numberDisplay").textContent = "收到的數字：" + data.number;
         }
 
-        // 每 3 秒檢查一次
-        setInterval(checkStatus, 3000);
+        receiveNumber();
     </script>
 </body>
 </html>
