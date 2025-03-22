@@ -3,26 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>接收數字</title>
+    <title>輸入與接收數字</title>
 </head>
 <body>
+    <h2>請輸入數字：</h2>
+    <form id="numberForm">
+        <input type="number" id="numberInput" required>
+        <button type="submit">送出</button>
+    </form>
+
     <h2>接收到的數字：</h2>
     <p id="numberDisplay">等待接收數字...</p>
 
     <script>
-        // 監聽 POST 請求
-        async function receiveNumber() {
-            // 等待請求的 Body 資料
-            const response = await fetch(window.location.href, {
-                method: "POST"
+        document.getElementById("numberForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const number = document.getElementById("numberInput").value;
+
+            const response = await fetch("/api/submit-number", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ number })
             });
 
-            // 解析接收的數據（假設是 JSON 格式）
-            const data = await response.json();
-            document.getElementById("numberDisplay").textContent = "收到的數字：" + data.number;
+            if (response.ok) {
+                alert("數字已提交並發送到目標網站！");
+            } else {
+                alert("提交失敗！");
+            }
+        });
+
+        async function fetchNumber() {
+            try {
+                const response = await fetch("/api/get-number");
+                if (!response.ok) throw new Error("伺服器回應錯誤");
+
+                const data = await response.json();
+                document.getElementById("numberDisplay").textContent = 
+                    data.number ? `收到的數字：${data.number}` : "尚未有數字";
+            } catch (error) {
+                console.error("錯誤:", error);
+            }
         }
 
-        receiveNumber();
+        fetchNumber(); // 進入頁面時自動執行
     </script>
 </body>
 </html>
