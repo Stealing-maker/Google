@@ -3,50 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>輸入與接收數字</title>
+    <title>商品購買</title>
 </head>
 <body>
-    <h2>請輸入數字：</h2>
-    <form id="numberForm">
-        <input type="number" id="numberInput" required>
-        <button type="submit">送出</button>
-    </form>
-
-    <h2>接收到的數字：</h2>
-    <p id="numberDisplay">等待接收數字...</p>
+    <h2>輸入商品編號</h2>
+    <input type="text" id="productId" placeholder="請輸入商品編號">
+    <button onclick="sendProduct()">送出</button>
+    
+    <p id="responseMessage"></p>
 
     <script>
-        document.getElementById("numberForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const number = document.getElementById("numberInput").value;
-
-            const response = await fetch("/api/submit-number", {
+        function sendProduct() {
+            const productId = document.getElementById("productId").value;
+            const responseMessage = document.getElementById("responseMessage");
+    
+            if (!productId) {
+                responseMessage.textContent = "請輸入商品編號！";
+                return;
+            }
+    
+            fetch("https://restless-fire-a5e7.no-reply-oglego.workers.dev/api/buy", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ number })
+                body: JSON.stringify({ product: productId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                responseMessage.textContent = data.message;
+                window.location.href = "success.html"; // 成功後跳轉
+            })
+            .catch(error => {
+                responseMessage.textContent = "發生錯誤：" + error;
             });
-
-            if (response.ok) {
-                alert("數字已提交並發送到目標網站！");
-            } else {
-                alert("提交失敗！");
-            }
-        });
-
-        async function fetchNumber() {
-            try {
-                const response = await fetch("/api/get-number");
-                if (!response.ok) throw new Error("伺服器回應錯誤");
-
-                const data = await response.json();
-                document.getElementById("numberDisplay").textContent = 
-                    data.number ? `收到的數字：${data.number}` : "尚未有數字";
-            } catch (error) {
-                console.error("錯誤:", error);
-            }
         }
-
-        fetchNumber(); // 進入頁面時自動執行
     </script>
 </body>
 </html>
