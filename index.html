@@ -30,7 +30,6 @@
             .then(response => response.json())
             .then(data => {
                 responseMessage.textContent = data.message;
-                window.location.href = "success.html"; // 成功後跳轉
             })
             .catch(error => {
                 responseMessage.textContent = "發生錯誤：" + error;
